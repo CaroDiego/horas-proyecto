@@ -1,0 +1,61 @@
+.AddHours-container {
+  background-color: #1B1F24; /* Dark background */
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label {
+  color: #FBFFF1; /* Light color for text */
+  font-size: 14px;
+  font-weight: 600;
+}
+
+input {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #A6A6A6; /* Lighter gray border */
+  border-radius: 5px;
+  background-color: #2E353B; /* Dark input background */
+  color: #FBFFF1; /* Light input text */
+}
+
+input:focus {
+  outline: none;
+  border-color: #94D2BD; /* Accent color when focused */
+  background-color: #2C3339; /* Darker background when focused */
+}
+
+button {
+  padding: 10px;
+  font-size: 16px;
+  color: #1B1F24; /* Dark button text */
+  background-color: #94D2BD; /* Accent background color */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #669BBC; /* Lighter shade on hover */
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(148, 210, 189, 0.5); /* Focus ring */
+}
+
+input:disabled {
+  background-color: #FBFFF1; /* Color de fondo para los campos deshabilitados */
+  cursor: not-allowed; /* Cursor para indicar que está deshabilitado */
+}

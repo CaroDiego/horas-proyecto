@@ -1,0 +1,124 @@
+.bottom-container {
+  display: flex;
+  flex-direction: column; /* Disposición vertical */
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  margin-top: 20px;
+  background-color: #1b1f24; /* Dark background */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.bottom-container-up {
+  display: flex;
+  flex-direction: row; /* Fila para los contenedores internos */
+  justify-content: space-between;
+  width: 100%;
+}
+
+.total-hours-container {
+  flex: 1;
+  margin: 0 10px;
+  padding: 20px;
+  background-color: #2e353b; /* Dark container background */
+  border-radius: 8px;
+  color: #fbfff1; /* Light text color */
+  text-align: center;
+}
+
+.total-hours-container p {
+  font-size: 18px;
+  margin: 10px 0;
+  font-weight: 500;
+  white-space: nowrap; /* Ensure text fits in one line */
+  overflow: hidden; /* Hide overflow text */
+  text-overflow: ellipsis; /* Add ellipsis for overflow text */
+}
+
+.hours-done,
+.hours-left,
+.total,
+.days-done {
+  font-size: 16px;
+  margin: 10px 0;
+}
+
+.hours-done,
+.hours-left,
+.total {
+  background-color: #2a9d8f; /* Color de fondo de cada párrafo */
+  padding: 10px;
+  border-radius: 8px;
+  color: white; /* Texto blanco para que resalte */
+  text-align: center;
+}
+
+.hours-done {
+  background-color: #f4a261; /* Naranja para 'Horas Hechas' */
+}
+
+.hours-left {
+  background-color: #264653; /* Azul-verde oscuro para 'Horas Restantes' */
+  font-weight: bold; /* Negrita para horas restantes */
+}
+
+.total {
+  background-color: #e76f51; /* Rojo-anaranjado para 'Total Horas' */
+}
+
+.days-done {
+  background-color: #e9c46a; /* Amarillo suave para 'Días Trabajados' */
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 8px;
+  color: white;
+}
+
+.Extra-hours {
+  background-color: #2a9d8f; /* Verde para 'Horas Extras' */
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 8px;
+  color: white;
+}
+
+.last-day {
+  background-color: #f4a261; /* Color de fondo para 'Último Día Trabajado' */
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 8px;
+  color: white;
+  margin-top: 10px;
+}
+
+.finishing-date-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  width: 100%; /* Asegura que ocupe el ancho completo */
+}
+
+.finishing-date {
+  font-size: 18px;
+  padding: 10px;
+  background-color: #2a9d8f; /* Fondo verde para 'Fecha de Fin Estimada' */
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+}
+
+.total-hours-container p {
+  transition: opacity 0.3s ease;
+}
+
+.total-hours-container p:hover {
+  opacity: 0.8; /* Efecto hover para cada párrafo */
+}
+.finishing-date-container p {
+  transition: opacity 0.3s ease;
+}
+
+.finishing-date-container p:hover {
+  opacity: 0.8; /* Efecto hover para cada párrafo */
+}
