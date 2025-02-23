@@ -55,6 +55,11 @@ button:focus {
   box-shadow: 0 0 0 3px rgba(148, 210, 189, 0.5); /* Focus ring */
 }
 
+button:disabled{
+  background-color: #A6A6A6; /* Color de fondo para los botones deshabilitados */
+  cursor: not-allowed; /* Cursor para indicar que está deshabilitado */
+}
+
 input:disabled {
   background-color: #FBFFF1; /* Color de fondo para los campos deshabilitados */
   cursor: not-allowed; /* Cursor para indicar que está deshabilitado */

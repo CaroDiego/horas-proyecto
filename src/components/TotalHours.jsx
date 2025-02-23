@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import supabase from "../supabase/config";
 import "./TotalHours.css";
+import { UserContext } from "../context/usercontext";
 
 function TotalHours() {
+  const { user } = useContext(UserContext);
   const [data, setData] = useState({
     hoursDone: 0,
     totalHours: 0,
@@ -92,28 +94,32 @@ function TotalHours() {
 
   return (
     <div className="bottom-container">
-      <div className="bottom-container-up">
-        <div className="total-hours-container">
-          <p className="hours-done">
-            Horas Hechas: {data.hoursDone}h de {data.totalHours}h
-          </p>
-          <p className="hours-left">
-            Faltan {data.totalHours - data.hoursDone} horas
-          </p>
-          <p className="total">
-            {Math.round((data.hoursDone / data.totalHours) * 100)}% de las horas
-            completas
-          </p>
-        </div>
-        <div className="total-hours-container">
-          <p className="days-done">Días trabajados: {data.days_done}</p>
-          <p className="Extra-hours">Horas Extras Hechas: {extraHours}</p>
-          <p className="last-day">Último Día Trabajado: {lastDay}</p>
-        </div>
-      </div>
-      <div className="finishing-date-container">
-        <p className="finishing-date">Fecha de Fin Estimada: {finishingDate}</p>
-      </div>
+      {user ? (
+        <>
+          <div className="bottom-container-up">
+            <div className="total-hours-container">
+              <p className="hours-done">
+                Horas Hechas: {data.hoursDone}h de {data.totalHours}h
+              </p>
+              <p className="hours-left">
+                Faltan {data.totalHours - data.hoursDone} horas
+              </p>
+              <p className="total">
+                {Math.round((data.hoursDone / data.totalHours) * 100)}% de las horas
+                completas
+              </p>
+            </div>
+            <div className="total-hours-container">
+              <p className="days-done">Días trabajados: {data.days_done}</p>
+              <p className="Extra-hours">Horas Extras Hechas: {extraHours}</p>
+              <p className="last-day">Último Día Trabajado: {lastDay}</p>
+            </div>
+          </div>
+          <div className="finishing-date-container">
+            <p className="finishing-date">Fecha de Fin Estimada: {finishingDate}</p>
+          </div>
+        </>
+      ): (<p>Inicia sesión primero</p>)}
     </div>
   );
 }

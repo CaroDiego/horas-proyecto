@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import supabase from "../supabase/config";
 import "./AddDay.css";
+import { UserContext } from "../context/usercontext";
 
 function AddDay() {
+  const { user } = useContext(UserContext);
   const [date, setDate] = useState("");
   const [hours, setHours] = useState("");
   const [extraHours, setExtraHours] = useState("");
 
   const dateChange = (e) => {
     setDate(e.target.value);
+    console.log(user)
   };
 
   const hoursChange = (e) => {
@@ -32,12 +35,13 @@ function AddDay() {
           fecha: date,
           horas: hours,
           horas_extras: extraHours,
+          user_id: user,
         },
       ])
       .select();
   };
 
-  const isFormValid = date && hours;
+  const isFormValid = date && hours && user;
 
   return (
     <div className="AddHours-container">
