@@ -25,7 +25,9 @@ function TotalHours() {
 
   useEffect(() => {
     const fetchCategorias = async () => {
-      let { data: resumen, error } = await supabase.from("resumen").select("*");
+      let { data: resumen, error } = await supabase.from("resumen").select("*").eq("user_id", user);
+      console.log("User:", user)
+      console.log("Resumen:", resumen)
       if (error) {
         console.log(error);
       } else if (resumen && resumen.length > 0) {
