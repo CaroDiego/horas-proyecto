@@ -25,10 +25,11 @@ function TotalHours() {
 
   useEffect(() => {
     const fetchCategorias = async () => {
-      let { data: resumen, error } = await supabase.from("resumen").select("*").eq("user_id", user);
-      console.log("User:", user)
-      console.log("Resumen:", resumen)
-      if (error) {
+      let { data: resumen, error } = await supabase
+        .from("resumen")
+        .select("*")
+        .eq("user_id", user);
+        if (error && user) {
         console.log(error);
       } else if (resumen && resumen.length > 0) {
         setData({
@@ -71,7 +72,7 @@ function TotalHours() {
     fetchCategorias();
     fetchExtraHours();
     fetchLastDayWorked();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (data.hoursLeft > 0) {
@@ -107,8 +108,8 @@ function TotalHours() {
                 Faltan {data.totalHours - data.hoursDone} horas
               </p>
               <p className="total">
-                {Math.round((data.hoursDone / data.totalHours) * 100)}% de las horas
-                completas
+                {Math.round((data.hoursDone / data.totalHours) * 100)}% de las
+                horas completas
               </p>
             </div>
             <div className="total-hours-container">
@@ -118,10 +119,14 @@ function TotalHours() {
             </div>
           </div>
           <div className="finishing-date-container">
-            <p className="finishing-date">Fecha de Fin Estimada: {finishingDate}</p>
+            <p className="finishing-date">
+              Fecha de Fin Estimada: {finishingDate}
+            </p>
           </div>
         </>
-      ): (<p>Inicia sesión primero</p>)}
+      ) : (
+        <p>Inicia sesión primero</p>
+      )}
     </div>
   );
 }
