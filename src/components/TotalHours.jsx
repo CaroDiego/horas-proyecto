@@ -3,7 +3,7 @@ import supabase from "../supabase/config";
 import "./TotalHours.css";
 import { UserContext } from "../context/usercontext";
 
-function TotalHours() {
+function TotalHours({ refresh }) {
   const { user } = useContext(UserContext);
   const [data, setData] = useState({
     hoursDone: 0,
@@ -14,6 +14,7 @@ function TotalHours() {
 
   const diasFestivos = [
     "2025-03-03",
+    "2025-03-04",
     "2025-04-18",
     "2025-04-21",
     "2025-05-01",
@@ -23,56 +24,50 @@ function TotalHours() {
   const [lastDay, setLastDay] = useState("");
   const [finishingDate, setFinishingDate] = useState("");
 
+  const fetchData = async () => {
+    const { data: resumen, error } = await supabase
+      .from("resumen")
+      .select("*")
+      .eq("user_id", user);
+    if (error && user) {
+      console.log(error);
+    } else if (resumen && resumen.length > 0) {
+      setData({
+        hoursDone: resumen[0].horas_hechas || 0,
+        totalHours: resumen[0].horas_necesarias || 0,
+        hoursLeft: resumen[0].horas_faltantes || 0,
+        days_done: resumen[0].dias_hechos || 0,
+      });
+    }
+
+    const { data: practicas, error: practicasError } = await supabase
+      .from("practicas")
+      .select("horas_extras")
+      .gte("horas_extras", 1);
+
+    if (practicasError) {
+      console.log(practicasError);
+    } else {
+      let totalExtra = practicas.reduce((acc, p) => acc + p.horas_extras, 0);
+      setExtraHours(totalExtra);
+    }
+
+    const { data: lastDayData, error: lastDayError } = await supabase
+      .from("practicas")
+      .select("fecha")
+      .order("fecha", { ascending: false })
+      .limit(1);
+
+    if (lastDayError) {
+      console.log(lastDayError);
+    } else if (lastDayData.length > 0) {
+      setLastDay(lastDayData[0].fecha);
+    }
+  };
+
   useEffect(() => {
-    const fetchCategorias = async () => {
-      let { data: resumen, error } = await supabase
-        .from("resumen")
-        .select("*")
-        .eq("user_id", user);
-        if (error && user) {
-        console.log(error);
-      } else if (resumen && resumen.length > 0) {
-        setData({
-          hoursDone: resumen[0].horas_hechas || 0,
-          totalHours: resumen[0].horas_necesarias || 0,
-          hoursLeft: resumen[0].horas_faltantes || 0,
-          days_done: resumen[0].dias_hechos || 0,
-        });
-      }
-    };
-
-    const fetchExtraHours = async () => {
-      let { data: practicas, error } = await supabase
-        .from("practicas")
-        .select("horas_extras")
-        .gte("horas_extras", 1);
-
-      if (error) {
-        console.log(error);
-      } else {
-        let totalExtra = practicas.reduce((acc, p) => acc + p.horas_extras, 0);
-        setExtraHours(totalExtra);
-      }
-    };
-
-    const fetchLastDayWorked = async () => {
-      let { data: lastDay, error } = await supabase
-        .from("practicas")
-        .select("fecha")
-        .order("fecha", { ascending: false })
-        .limit(1);
-
-      if (error) {
-        console.log(error);
-      } else if (lastDay.length > 0) {
-        setLastDay(lastDay[0].fecha);
-      }
-    };
-
-    fetchCategorias();
-    fetchExtraHours();
-    fetchLastDayWorked();
-  }, [user]);
+    fetchData();
+  }, [user, refresh]);
 
   useEffect(() => {
     if (data.hoursLeft > 0) {

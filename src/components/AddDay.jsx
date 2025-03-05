@@ -3,15 +3,15 @@ import supabase from "../supabase/config";
 import "./AddDay.css";
 import { UserContext } from "../context/usercontext";
 
-function AddDay() {
+function AddDay({ onAddHours }) {
   const { user } = useContext(UserContext);
   const [date, setDate] = useState("");
   const [hours, setHours] = useState("");
-  const [extraHours, setExtraHours] = useState("");
+  const [extraHours, setExtraHours] = useState(0);
 
   const dateChange = (e) => {
     setDate(e.target.value);
-    console.log(user)
+    console.log(user);
   };
 
   const hoursChange = (e) => {
@@ -39,6 +39,9 @@ function AddDay() {
         },
       ])
       .select();
+    if (!error) {
+      onAddHours();
+    }
   };
 
   const isFormValid = date && hours && user;
