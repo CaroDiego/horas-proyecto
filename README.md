@@ -13,7 +13,7 @@ Aplicación para gestionar y visualizar las horas trabajadas en un proyecto, as�
 ## 📌 Características  
 ✔️ Registro y seguimiento de horas trabajadas  
 ✔️ Cálculo de horas restantes  
-✔️ Interfaz intuitiva y fácil de usar  
+✔️ Previsión de finalicación de proyecto
 
 ## 📦 Instalación y ejecución  
 
