@@ -122,3 +122,56 @@
 .finishing-date-container p:hover {
   opacity: 0.8; /* Efecto hover para cada párrafo */
 }
+
+.extra-hours {
+  background-color: #e9c46a !important;
+}
+
+.no-extra-hours {
+  background-color: #f4a261 !important;
+}
+.react-calendar {
+  background-color: #1b1f24 !important;
+  border-radius: 8px;
+  border-color: none !important;
+}
+
+.react-calendar__navigation {
+  display: flex;
+  height: 44px;
+  margin-bottom: 1em;
+  background-color: #94d2bd !important;
+  border-radius: 7px;
+}
+
+/* .react-calendar__month-view__days__day{
+  background-color: #2e353b;
+  color: #FBFFF1 ;
+  border-radius: 8px;
+} */
+
+.react-calendar__tile {
+  background-color: #2e353b;
+  color: #fbfff1;
+  border-radius: 8px;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  color: #2e353b !important;
+}
+
+.react-calendar__tile--hasActive {
+  background: #2a9d8f !important;
+}
+
+.react-calendar__tile--active {
+  background: #264653 !important;
+  color: white;
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  background: #264653 !important;
+  color: white !important;
+}

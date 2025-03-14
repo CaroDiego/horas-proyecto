@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import supabase from "../supabase/config";
 import "./TotalHours.css";
 import { UserContext } from "../context/usercontext";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 
 function TotalHours({ refresh }) {
   const { user } = useContext(UserContext);
@@ -23,6 +25,8 @@ function TotalHours({ refresh }) {
   const [extraHours, setExtraHours] = useState(0);
   const [lastDay, setLastDay] = useState("");
   const [finishingDate, setFinishingDate] = useState("");
+  const [daysDone, setDaysDone] = useState([]);
+  const [date, setDate] = useState(new Date());
 
   const fetchData = async () => {
     const { data: resumen, error } = await supabase
@@ -30,7 +34,7 @@ function TotalHours({ refresh }) {
       .select("*")
       .eq("user_id", user);
     if (error && user) {
-      console.log(error);
+      console.error(error);
     } else if (resumen && resumen.length > 0) {
       setData({
         hoursDone: resumen[0].horas_hechas || 0,
@@ -40,28 +44,46 @@ function TotalHours({ refresh }) {
       });
     }
 
-    const { data: practicas, error: practicasError } = await supabase
+    const { data: practicasData, error: practicasError } = await supabase
       .from("practicas")
-      .select("horas_extras")
-      .gte("horas_extras", 1);
+      .select("fecha, horas_extras")
+      .eq("user_id", user);
 
     if (practicasError) {
-      console.log(practicasError);
+      console.error(practicasError);
     } else {
-      let totalExtra = practicas.reduce((acc, p) => acc + p.horas_extras, 0);
-      setExtraHours(totalExtra);
+      setDaysDone(practicasData);
+      daysDone.forEach((p) => {});
     }
 
-    const { data: lastDayData, error: lastDayError } = await supabase
+    const { data: extraHoursData, error: extraHoursError } = await supabase
       .from("practicas")
-      .select("fecha")
-      .order("fecha", { ascending: false })
-      .limit(1);
+      .select("horas_extras")
+      .eq("user_id", user)
+      .gte("horas_extras", 1);
 
-    if (lastDayError) {
-      console.log(lastDayError);
-    } else if (lastDayData.length > 0) {
-      setLastDay(lastDayData[0].fecha);
+    if (extraHoursError) {
+      console.error(extraHoursError);
+    } else {
+      let totalExtra = extraHoursData.reduce(
+        (acc, p) => acc + p.horas_extras,
+        0
+      );
+      setExtraHours(totalExtra);
+    }
+    if (user) {
+      const { data: lastDayData, error: lastDayError } = await supabase
+        .from("practicas")
+        .select("fecha")
+        .eq("user_id", user)
+        .order("fecha", { ascending: false })
+        .limit(1);
+
+      if (lastDayError) {
+        console.error("Error al obtener el último día:", lastDayError);
+      } else if (lastDayData && lastDayData.length > 0) {
+        setLastDay(lastDayData[0].fecha);
+      }
     }
   };
 
@@ -99,9 +121,7 @@ function TotalHours({ refresh }) {
               <p className="hours-done">
                 Horas Hechas: {data.hoursDone}h de {data.totalHours}h
               </p>
-              <p className="hours-left">
-                Faltan {data.totalHours - data.hoursDone} horas
-              </p>
+              <p className="hours-left">Faltan {data.hoursLeft} horas</p>
               <p className="total">
                 {Math.round((data.hoursDone / data.totalHours) * 100)}% de las
                 horas completas
@@ -110,7 +130,36 @@ function TotalHours({ refresh }) {
             <div className="total-hours-container">
               <p className="days-done">Días trabajados: {data.days_done}</p>
               <p className="Extra-hours">Horas Extras Hechas: {extraHours}</p>
-              <p className="last-day">Último Día Trabajado: {lastDay}</p>
+              <p className="last-day">
+                Último Día Trabajado:{" "}
+                {new Date(
+                  new Date(lastDay).setDate(new Date(lastDay).getDate())
+                ).toLocaleDateString()}
+              </p>
+            </div>
+            <div className="total-hours-container">
+              <Calendar
+                onChange={setDate}
+                value={date}
+                calendarType="iso8601"
+                tileClassName={({ date }) => {
+                  if (!daysDone || daysDone.length === 0) return null;
+                  const formattedDate = new Date(date);
+                  formattedDate.setDate(formattedDate.getDate() + 1);
+                  const formattedDateString = formattedDate
+                    .toISOString()
+                    .split("T")[0];
+                  const practica = daysDone.find(
+                    (p) => p.fecha === formattedDateString
+                  );
+                  if (practica) {
+                    return practica.horas_extras > 0
+                      ? "extra-hours"
+                      : "no-extra-hours";
+                  }
+                  return null;
+                }}
+              />
             </div>
           </div>
           <div className="finishing-date-container">
